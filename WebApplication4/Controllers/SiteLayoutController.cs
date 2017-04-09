@@ -21,6 +21,10 @@ namespace WebApplication4.Controllers
         {
             return PartialView($"{PartilFolder}_Intro.cshtml");
         }
+        public ActionResult RenderTitleControls()
+        {
+            return PartialView($"{PartilFolder}_TitleControls.cshtml");
+        }
 
         public ActionResult RenderFooter()
         {
