@@ -33,8 +33,8 @@ namespace WebApplication4.Controllers
 
         public ActionResult RenderHeader()
         {
-            //List<NavigationListItem> nav = GetNavigationModelFromDatabase();
-            var nav = GetObjectFromCache<List<NavigationListItem>>("mainNav", 5, GetNavigationModelFromDatabase);
+            List<NavigationListItem> nav = GetNavigationModelFromDatabase();
+            //var nav = GetObjectFromCache<List<NavigationListItem>>("mainNav", 5, GetNavigationModelFromDatabase);
             return PartialView($"{PartilFolder}_Header.cshtml", nav);
         }
         //public ActionResult RenderTopNavigation()
@@ -58,7 +58,8 @@ namespace WebApplication4.Controllers
 
         private List<NavigationListItem> GetChildNavigationList(IPublishedContent page)
         {
-            var childPages = page.Children.Where("Visible");
+            var childPages = page.Children.Where("Visible")
+                .Where(x => !x.HasProperty("excludeFromTopNavigation") || !x.GetPropertyValue<bool>("excludeFromTopNavigation"));
             if (childPages == null)
             {
                 return new List<NavigationListItem>();

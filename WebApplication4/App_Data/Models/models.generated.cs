@@ -19,14 +19,14 @@ using Umbraco.ModelsBuilder;
 using Umbraco.ModelsBuilder.Umbraco;
 
 [assembly: PureLiveAssembly]
-[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "b6a92fe8710d061c")]
+[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "cf1e3b3f0493b04f")]
 [assembly:System.Reflection.AssemblyVersion("0.0.0.2")]
 
 namespace Umbraco.Web.PublishedContentModels
 {
 	/// <summary>Home</summary>
 	[PublishedContentModel("home")]
-	public partial class Home : PublishedContentModel, IIntroControls
+	public partial class Home : PublishedContentModel, IFeaturedItemsControls, IIntroControls
 	{
 #pragma warning disable 0109 // new is redundant
 		public new const string ModelTypeAlias = "home";
@@ -47,6 +47,15 @@ namespace Umbraco.Web.PublishedContentModels
 		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<Home, TValue>> selector)
 		{
 			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+
+		///<summary>
+		/// Featured Items: Enter the featured items to display in the featured section
+		///</summary>
+		[ImplementPropertyType("featuredItems")]
+		public Archetype.Models.ArchetypeModel FeaturedItems
+		{
+			get { return FeaturedItemsControls.GetFeaturedItems(this); }
 		}
 
 		///<summary>
@@ -193,7 +202,7 @@ namespace Umbraco.Web.PublishedContentModels
 
 	/// <summary>Content</summary>
 	[PublishedContentModel("content")]
-	public partial class Content : PublishedContentModel, ITitleControls
+	public partial class Content : PublishedContentModel, IBasicContentControls, ITitleControls, ITopNavigationControls
 	{
 #pragma warning disable 0109 // new is redundant
 		public new const string ModelTypeAlias = "content";
@@ -217,6 +226,15 @@ namespace Umbraco.Web.PublishedContentModels
 		}
 
 		///<summary>
+		/// Content Grid: Enter the content for the page
+		///</summary>
+		[ImplementPropertyType("contentGrid")]
+		public Newtonsoft.Json.Linq.JToken ContentGrid
+		{
+			get { return BasicContentControls.GetContentGrid(this); }
+		}
+
+		///<summary>
 		/// Sub Title: Enter the title to show under the main title
 		///</summary>
 		[ImplementPropertyType("subTitle")]
@@ -232,6 +250,15 @@ namespace Umbraco.Web.PublishedContentModels
 		public string Title
 		{
 			get { return TitleControls.GetTitle(this); }
+		}
+
+		///<summary>
+		/// Exclude From Top Navigation: Tick this if you don't want this page to appear in top navigation
+		///</summary>
+		[ImplementPropertyType("excludeFromTopNavigation")]
+		public bool ExcludeFromTopNavigation
+		{
+			get { return TopNavigationControls.GetExcludeFromTopNavigation(this); }
 		}
 	}
 
@@ -384,6 +411,144 @@ namespace Umbraco.Web.PublishedContentModels
 
 		/// <summary>Static getter for Title</summary>
 		public static string GetTitle(ITitleControls that) { return that.GetPropertyValue<string>("title"); }
+	}
+
+	// Mixin content Type 6055 with alias "basicContentControls"
+	/// <summary>Basic Content Controls</summary>
+	public partial interface IBasicContentControls : IPublishedContent
+	{
+		/// <summary>Content Grid</summary>
+		Newtonsoft.Json.Linq.JToken ContentGrid { get; }
+	}
+
+	/// <summary>Basic Content Controls</summary>
+	[PublishedContentModel("basicContentControls")]
+	public partial class BasicContentControls : PublishedContentModel, IBasicContentControls
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "basicContentControls";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public BasicContentControls(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<BasicContentControls, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+
+		///<summary>
+		/// Content Grid: Enter the content for the page
+		///</summary>
+		[ImplementPropertyType("contentGrid")]
+		public Newtonsoft.Json.Linq.JToken ContentGrid
+		{
+			get { return GetContentGrid(this); }
+		}
+
+		/// <summary>Static getter for Content Grid</summary>
+		public static Newtonsoft.Json.Linq.JToken GetContentGrid(IBasicContentControls that) { return that.GetPropertyValue<Newtonsoft.Json.Linq.JToken>("contentGrid"); }
+	}
+
+	// Mixin content Type 6057 with alias "topNavigationControls"
+	/// <summary>Top Navigation Controls</summary>
+	public partial interface ITopNavigationControls : IPublishedContent
+	{
+		/// <summary>Exclude From Top Navigation</summary>
+		bool ExcludeFromTopNavigation { get; }
+	}
+
+	/// <summary>Top Navigation Controls</summary>
+	[PublishedContentModel("topNavigationControls")]
+	public partial class TopNavigationControls : PublishedContentModel, ITopNavigationControls
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "topNavigationControls";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public TopNavigationControls(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<TopNavigationControls, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+
+		///<summary>
+		/// Exclude From Top Navigation: Tick this if you don't want this page to appear in top navigation
+		///</summary>
+		[ImplementPropertyType("excludeFromTopNavigation")]
+		public bool ExcludeFromTopNavigation
+		{
+			get { return GetExcludeFromTopNavigation(this); }
+		}
+
+		/// <summary>Static getter for Exclude From Top Navigation</summary>
+		public static bool GetExcludeFromTopNavigation(ITopNavigationControls that) { return that.GetPropertyValue<bool>("excludeFromTopNavigation"); }
+	}
+
+	// Mixin content Type 6061 with alias "featuredItemsControls"
+	/// <summary>Featured Items Controls</summary>
+	public partial interface IFeaturedItemsControls : IPublishedContent
+	{
+		/// <summary>Featured Items</summary>
+		Archetype.Models.ArchetypeModel FeaturedItems { get; }
+	}
+
+	/// <summary>Featured Items Controls</summary>
+	[PublishedContentModel("featuredItemsControls")]
+	public partial class FeaturedItemsControls : PublishedContentModel, IFeaturedItemsControls
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "featuredItemsControls";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public FeaturedItemsControls(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<FeaturedItemsControls, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+
+		///<summary>
+		/// Featured Items: Enter the featured items to display in the featured section
+		///</summary>
+		[ImplementPropertyType("featuredItems")]
+		public Archetype.Models.ArchetypeModel FeaturedItems
+		{
+			get { return GetFeaturedItems(this); }
+		}
+
+		/// <summary>Static getter for Featured Items</summary>
+		public static Archetype.Models.ArchetypeModel GetFeaturedItems(IFeaturedItemsControls that) { return that.GetPropertyValue<Archetype.Models.ArchetypeModel>("featuredItems"); }
 	}
 
 	/// <summary>Folder</summary>

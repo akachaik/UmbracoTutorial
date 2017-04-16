@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using Umbraco.Web.Models;
+﻿using System.Web.Mvc;
 using Umbraco.Web.Mvc;
+using WebApplication4.Models;
+
+using System.Collections.Generic;
+using Umbraco.Web;
+using Umbraco.Core.Models;
+
+using System.Linq;
+using Archetype.Models;
+
+
 
 namespace WebApplication4.Controllers
 {
@@ -15,7 +19,30 @@ namespace WebApplication4.Controllers
 
         public ActionResult RenderFeatured()
         {
-            return PartialView(PartialViewFolder + "_Featured.cshtml");
+            var model = new List<FeaturedItem>();
+            var homePage = Umbraco.TypedContentAtRoot().First();
+            var featuredItems = homePage.GetPropertyValue<ArchetypeModel>("featuredItems");
+
+            foreach (var item in featuredItems)
+            {
+                var imageId = item.GetValue<int>("image");
+                var mediaItem = Umbraco.Media(imageId);
+                string imageUrl = mediaItem.Url;
+
+                var pageId = item.GetValue<int>("page");
+                var linkedToPage = Umbraco.TypedContent(pageId);
+                var linkUrl = linkedToPage.Url;
+
+                model.Add(new FeaturedItem
+                {
+                    Name = item.GetValue<string>("name"),
+                    Category = item.GetValue<string>("category"),
+                    ImageUrl = imageUrl,
+                    LinkUrl = linkUrl
+                });
+            }
+
+            return PartialView(PartialViewFolder + "_Featured.cshtml", model);
         }
         public ActionResult RenderServices()
         {
