@@ -51,12 +51,39 @@ namespace WebApplication4.Controllers
 
         public ActionResult RenderBlog()
         {
-            return PartialView(PartialViewFolder + "_Blog.cshtml");
+            var homePage = Umbraco.TypedContentAtRoot().First();
+            var model = new LatestBlogPosts()
+            {
+                Title = homePage.GetPropertyValue<string>("latestBlogPostsTitle"),
+                Introduction = homePage.GetPropertyValue<string>("latestBlogPostsIntroduction")
+            };
+
+            return PartialView(PartialViewFolder + "_Blog.cshtml", model);
         }
 
-        public ActionResult RenderClients()
+        public ActionResult RenderTestimonials()
         {
-            return PartialView(PartialViewFolder + "_Clients.cshtml");
+            var homePage = Umbraco.TypedContentAtRoot().First();
+
+            var quotes = new List<TestimonialQuote>();
+            var testimonialsList = homePage.GetPropertyValue<ArchetypeModel>("testimonialList");
+            foreach (var quote in testimonialsList)
+            {
+                quotes.Add(new TestimonialQuote
+                {
+                    Name = quote.GetValue<string>("name"),
+                    Quote =  quote.GetValue<string>("quote")
+                });
+            }
+
+            var model = new Testimonials
+            {
+                Title = homePage.GetPropertyValue<string>("testimonialsTitle"),
+                Introduction = homePage.GetPropertyValue<string>("testimonialsIntroduction"),
+                Quotes = quotes
+            };
+
+            return PartialView(PartialViewFolder + "_Testimonials.cshtml", model);
         }
     }
 }

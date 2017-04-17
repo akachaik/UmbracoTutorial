@@ -13,12 +13,12 @@ namespace WebApplication4.Controllers
     {
         private const string PartialViewFolder = "~/Views/Partials/Blog/";
 
-        public ActionResult RenderPostList()
+        public ActionResult RenderPostList(int numberOfItems)
         {
             var model = new List<BlogPreview>();
             var blogPage = Umbraco.TypedContentSingleAtXPath("//blog");
 
-            foreach (var item in blogPage.Children.OrderByDescending(x => x.UpdateDate))
+            foreach (var item in blogPage.Children.OrderByDescending(x => x.UpdateDate).Take(numberOfItems))
             {
                 var imageId = item.GetPropertyValue<int>("articleImage");
                 var mediaItem = Umbraco.Media(imageId);

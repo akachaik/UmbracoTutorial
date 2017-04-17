@@ -2793,7 +2793,7 @@
     <Content Include="scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Partials\Home\_Services.cshtml" />
     <Content Include="Views\Partials\Home\_Blog.cshtml" />
-    <Content Include="Views\Partials\Home\_Clients.cshtml" />
+    <Content Include="Views\Partials\Home\_Testimonials.cshtml" />
     <Content Include="Umbraco\assets\fonts\helveticons\helveticons.eot" />
     <Content Include="Umbraco\assets\fonts\helveticons\helveticons.ttf" />
     <Content Include="Umbraco\assets\fonts\helveticons\helveticons.woff" />
@@ -3000,7 +3000,9 @@
     <Compile Include="Controllers\SiteLayoutController.cs" />
     <Compile Include="Models\BlogPreview.cs" />
     <Compile Include="Models\FeaturedItem.cs" />
+    <Compile Include="Models\LatestBlogPosts.cs" />
     <Compile Include="Models\NavigationLink.cs" />
+    <Compile Include="Models\Testimonials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
