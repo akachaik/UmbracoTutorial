@@ -59,6 +59,7 @@ namespace WebApplication4.Controllers
         private List<NavigationListItem> GetChildNavigationList(IPublishedContent page)
         {
             var childPages = page.Children.Where("Visible")
+                .Where(x => x.Level <= 2)
                 .Where(x => !x.HasProperty("excludeFromTopNavigation") || !x.GetPropertyValue<bool>("excludeFromTopNavigation"));
             if (childPages == null)
             {

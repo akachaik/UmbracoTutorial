@@ -1,0 +1,27 @@
+﻿@using WebApplication4.Models
+@model List<WebApplication4.Models.BlogPreview>
+    
+<div class="row">
+    @foreach (var blogPreview in Model)
+    {
+        @RenderBlogPreview(blogPreview)
+    }
+</div>
+
+
+@helper RenderBlogPreview(BlogPreview blogPreview)
+{
+    <div class="col-md-4 text-center">
+        <div class="blog-inner">
+            <a href="@blogPreview.LinkUrl"><img class="img-responsive" src="@blogPreview.ImageUrl" alt="@blogPreview.Name"></a>
+            <div class="desc">
+                <h3>
+                    <a href="@blogPreview.LinkUrl">@blogPreview.Name</a>
+                </h3>
+                <p>@blogPreview.Introduction</p>
+                <p><a href="@blogPreview.LinkUrl" class="btn btn-primary btn-outline with-arrow">Read More<i class="icon-arrow-right"></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+}

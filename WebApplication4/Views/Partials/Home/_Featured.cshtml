@@ -26,6 +26,11 @@
 
 @helper RenderFeaturedItem(FeaturedItem item, string extraClass)
 {
+    if (item == null)
+    {
+        return;
+    }
+
     <a href="@item.LinkUrl" class="featured-grid @extraClass" style="background-image: url(@item.ImageUrl);">
         <div class="desc">
             <h3>@item.Name</h3>
