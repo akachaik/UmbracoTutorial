@@ -8,7 +8,7 @@ using  Umbraco.Web;
 using  Umbraco.ModelsBuilder;
 using  Umbraco.ModelsBuilder.Umbraco;
 [assembly: PureLiveAssembly]
-[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "5b3c098e8ed0f076")]
+[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "b9a83bfe1db9b6f2")]
 [assembly:System.Reflection.AssemblyVersion("0.0.0.1")]
 
 
@@ -879,6 +879,32 @@ namespace Umbraco.Web.PublishedContentModels
 
 		/// <summary>Static getter for Testimonials Title</summary>
 		public static string GetTestimonialsTitle(ITestimonialsControls that) { return that.GetPropertyValue<string>("testimonialsTitle"); }
+	}
+
+	/// <summary>Search</summary>
+	[PublishedContentModel("search")]
+	public partial class Search : PublishedContentModel
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "search";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public Search(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<Search, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
 	}
 
 	/// <summary>Folder</summary>

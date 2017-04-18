@@ -1,15 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using Archetype.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Umbraco.Web;
 using Umbraco.Web.Mvc;
 using WebApplication4.Models;
-
-using System.Collections.Generic;
-using Umbraco.Web;
-using Umbraco.Core.Models;
-
-using System.Linq;
-using Archetype.Models;
-
-
 
 namespace WebApplication4.Controllers
 {
