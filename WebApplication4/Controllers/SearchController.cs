@@ -32,6 +32,17 @@ namespace WebApplication4.Controllers
                 searchGroups = new List<SearchGroup>();
                 searchGroups.Add(new SearchGroup(model.FieldPropertyAliases.Split(','), new string[] { model.SearchTerm }));
             }
+
+            if (!string.IsNullOrEmpty(model.Category))
+            {
+                if (searchGroups == null)
+                {
+                    searchGroups = new List<SearchGroup>();
+                }
+
+                searchGroups.Add(new SearchGroup(new[] {"category"}, new[] {model.Category}));
+            }
+
             return searchGroups;
         }
 
@@ -61,9 +72,10 @@ namespace WebApplication4.Controllers
         [HttpPost]
         public ActionResult SubmitSearchForm(SearchViewModel model)
         {
+            model.SearchTerm = string.IsNullOrEmpty(model.SearchTerm) ? string.Empty : model.SearchTerm;
             if (ModelState.IsValid)
             {
-                if (!string.IsNullOrEmpty(model.SearchTerm))
+                if (!string.IsNullOrEmpty(model.SearchTerm) || !string.IsNullOrEmpty(model.Category))
                 {
                     model.SearchTerm = model.SearchTerm;
                     model.SearchGroups = GetSearchGroups(model);
@@ -159,6 +171,11 @@ namespace WebApplication4.Controllers
                 //usually would only have 1 search group, unless you want to filter out further, i.e. using categories as well as search terms
                 foreach (SearchGroup searchGroup in searchGroups)
                 {
+                    if (searchGroup.SearchTerms.Contains(""))
+                    {
+                        continue;
+                    }
+
                     queryNodes = queryNodes.And().GroupedOr(searchGroup.FieldsToSearchIn, searchGroup.SearchTerms);
                 }
             }

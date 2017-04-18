@@ -13,8 +13,12 @@
     @Html.HiddenFor(m => m.PageSize)
     @Html.HiddenFor(m => m.PagingGroupSize)
 
-    @Html.TextBoxFor(m => m.SearchTerm, new { placeholder = "Search..." })
-    <button id="submit-button">Search</button>
+    @Html.TextBoxFor(m => m.SearchTerm, new { placeholder = "Search...", @class = "form-control" })
+    <select name="category">
+        <option value="Phones">Phones</option>
+        <option value="Food">Food</option>
+    </select>
+    <button class="btn btn-primary" id="submit-button">Search</button>
 
     <div id="search-results">
         @{ Html.RenderAction("RenderSearchResults", "Search", new { Model = Model.SearchResults });}

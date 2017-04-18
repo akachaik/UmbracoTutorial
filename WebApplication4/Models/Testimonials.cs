@@ -53,6 +53,7 @@ namespace WebApplication4.Models
         public string FieldPropertyAliases { get; set; }
         public int PageSize { get; set; }
         public int PagingGroupSize { get; set; }
+        public string Category { get; set; }
         public List<SearchGroup> SearchGroups { get; set; }
         public SearchResultsModel SearchResults { get; set; }
     }

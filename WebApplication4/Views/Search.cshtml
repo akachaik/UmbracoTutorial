@@ -14,7 +14,7 @@
     <section class="container">
         <div class="row">
             <div class="col-xs-12">
-                @{ Html.RenderAction("RenderSearchForm", "Search", new { docTypeAliases = "blogPost,home", fieldPropertyAliases = "intro,nodeName,metaName,metaKeyWords,metaDescription,contentGrid", pageSize = 10, pagingGroupSize = 3 }); }
+                @{ Html.RenderAction("RenderSearchForm", "Search", new { docTypeAliases = "blogPost,home", fieldPropertyAliases = "intro,nodeName,metaName,metaKeyWords,metaDescription,contentGrid", pageSize = 1, pagingGroupSize = 3 }); }
             </div>
         </div>
     </section>
@@ -47,7 +47,7 @@
             e.preventDefault();
             var form = $(this).closest('form');
             $(form).submit();
-        })
+        });
 
         $(document).on("keyup",
             "#SearchTerm",

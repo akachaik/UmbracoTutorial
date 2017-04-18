@@ -19,8 +19,8 @@ using Umbraco.ModelsBuilder;
 using Umbraco.ModelsBuilder.Umbraco;
 
 [assembly: PureLiveAssembly]
-[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "b9a83bfe1db9b6f2")]
-[assembly:System.Reflection.AssemblyVersion("0.0.0.2")]
+[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "1a4af3e0d511b22f")]
+[assembly:System.Reflection.AssemblyVersion("0.0.0.3")]
 
 namespace Umbraco.Web.PublishedContentModels
 {
@@ -605,6 +605,9 @@ namespace Umbraco.Web.PublishedContentModels
 
 		/// <summary>Article Intro</summary>
 		string ArticleIntro { get; }
+
+		/// <summary>Category</summary>
+		object Category { get; }
 	}
 
 	/// <summary>Article Controls</summary>
@@ -655,6 +658,18 @@ namespace Umbraco.Web.PublishedContentModels
 
 		/// <summary>Static getter for Article Intro</summary>
 		public static string GetArticleIntro(IArticleControls that) { return that.GetPropertyValue<string>("articleIntro"); }
+
+		///<summary>
+		/// Category: Choose the category for this article
+		///</summary>
+		[ImplementPropertyType("category")]
+		public object Category
+		{
+			get { return GetCategory(this); }
+		}
+
+		/// <summary>Static getter for Category</summary>
+		public static object GetCategory(IArticleControls that) { return that.GetPropertyValue("category"); }
 	}
 
 	/// <summary>Blog Post</summary>
@@ -698,6 +713,15 @@ namespace Umbraco.Web.PublishedContentModels
 		public string ArticleIntro
 		{
 			get { return ArticleControls.GetArticleIntro(this); }
+		}
+
+		///<summary>
+		/// Category: Choose the category for this article
+		///</summary>
+		[ImplementPropertyType("category")]
+		public object Category
+		{
+			get { return ArticleControls.GetCategory(this); }
 		}
 
 		///<summary>
